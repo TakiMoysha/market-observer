@@ -1,0 +1,25 @@
+{
+  "name": "astro-latest",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/node": "^9.0.2",
+    "@elysiajs/cors": "^1.2.0",
+    "@elysiajs/opentelemetry": "^1.2.0",
+    "@elysiajs/static": "^1.2.0",
+    "@elysiajs/swagger": "^1.2.0",
+    "astro": "^5.1.9",
+    "elysia": "^1.2.10",
+    "elysia-autoroutes": "^0.5.0",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0"
+  }
+}
