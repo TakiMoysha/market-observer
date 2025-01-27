@@ -1,3 +1,6 @@
+demo: docker-build
+	docker run -it --rm --init --network=host market-observer
+
 
 dev-back:
 	bun run --hot backend/app.ts
@@ -13,13 +16,11 @@ build-backend:
   	--outfile backbin \
   	./backend/app.ts
 
-demo: docker-build
-	docker run -it --rm --init --network=host market-observer
-
-
 docker-build:
 	docker build -t market-observer .
 
 docker-dev:
 	docker run -it --init --rm -p 8080:8080 -p 4321:4321 market-observer
 
+docker-postgres:
+	docker run --name postgresql -e POSTGRESQL_PASSWORD=postgres --network host bitnami/postgresql:latest

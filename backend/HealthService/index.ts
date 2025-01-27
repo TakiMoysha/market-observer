@@ -3,7 +3,7 @@ import os from "node:os";
 import { memoryUsage } from "node:process";
 import { Elysia, t } from "elysia";
 
-export const HealthController = new Elysia()
+export const HealthController = new Elysia({ tags: ["app"] })
   .get("/health", () => ({ status: "ok" }))
   .get("/status", () => {
     const body = {

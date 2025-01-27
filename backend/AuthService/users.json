@@ -1,0 +1,8 @@
+[
+  {
+    "email": "admin",
+    "originPassword": "admin",
+    "password": "$argon2id$v=19$m=65536,t=2,p=1$FtfjB40EgOjM1tGlnoP6c/CMuX2vqeYBHgEDV6IZGm4$avQwgvrvSX9i53Kjia2cP2wbJpCeZDnRI/BXaIWN6vM",
+    "activeSessions": []
+  }
+]

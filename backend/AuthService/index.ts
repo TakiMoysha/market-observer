@@ -1,45 +1,53 @@
-import os from "node:os";
-
-import { memoryUsage } from "node:process";
 import { Elysia, t } from "elysia";
 
-export const AuthService = new Elysia({ name: "Service:HealthCheck" })
-  .derive({ as: "scoped" }, ({ cookie: { session } }) => ({
-    auth: { user: session.value },
-  }))
+import { signIn, signUp, recovery, profile } from "./handlers";
+import { AuthError } from "./types";
+import { decodeBase64 } from "./utils";
+
+import UsersJson from "./users.json";
+
+const config = {
+  users: UsersJson,
+};
+
+export const DeriveAuth = new Elysia({ name: "Service:HealthCheck" })
+  .derive({ as: "scoped" }, ({ headers: { auth }, cookie: { session } }) => {
+    if (!auth) return { auth: { user: null } };
+    const [email, payload] = decodeBase64(auth).split(":");
+
+    console.log("auth:derive", email, payload);
+    // find user session and email
+    const UserObject = config.users.find((user) => user.email === email);
+    const CurrentSession = UserObject?.activeSessions.find(
+      (s) => s === session,
+    );
+    if (!UserObject || !CurrentSession) return { auth: { user: null } };
+
+    const authSession = { user: UserObject, session };
+    return { auth: authSession };
+  })
   .macro(({ onBeforeHandle }) => ({
-    isSignIn(value: boolean) {
+    isAuth(value: boolean) {
       onBeforeHandle(({ auth, error }) => {
-        if (!auth?.user || !auth.user) return error(401);
+        if (!auth?.user || !auth.session) return error(401);
       });
     },
   }));
 
-const signIn = async (body: { email: string, password: string }) => {
-  console.log(`Sign in: ${body.email}`);
-  if (body.email === "admin" && body.password === "admin") {
-    return { token: "x-admin" };
-  }
-
-  throw new Error("Invalid credentials");
-};
-
-const signUp = async (body: { email: string, password: string }) => {
-  console.log(`Sign up: ${body.email}`);
-  if (body.email === "admin" && body.password === "admin") {
-    return { token: "x-admin" };
-  }
-
-  throw new Error("Invalid credentials");
-}
-
-const recovery = async (body: { email: string }) => {
-  console.log(`Recovery: ${body.email}`);
-  return { token: "x-admin" };
-}
-
-export const HealthController = new Elysia({ prefix: "auth" })
-  .use(AuthService)
-  .post("/sign-in", signIn)
-  .post("/sign-up", () => signUp)
-  .post("/recovery", () => recovery);
+export const AuthService = (config: IAuthConfig) =>
+  new Elysia({
+    name: "auth-controller",
+    seed: config,
+    prefix: "auth",
+    tags: ["auth"],
+  })
+    // .use(DeriveAuth)
+    .error({ AUTH_ERROR: AuthError })
+    // .group((app: Elysia) =>
+    //   app
+    //     .guard({ as: "local", resposne: t.String() })
+    // )
+    .get("/profile", profile)
+    .post("/sign-in", signIn)
+    .post("/sign-up", signUp)
+    .post("/recovery", recovery);
