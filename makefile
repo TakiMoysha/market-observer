@@ -1,12 +1,9 @@
 
 dev-back:
-	bun run --hot server/app.ts
+	bun run --hot backend/app.ts
 
 dev-front:
 	bun run astro dev
-
-build-docker:
-	docker build -t market-observer .
 
 build-backend:
 	bun build --compile \
@@ -17,4 +14,12 @@ build-backend:
   	./backend/app.ts
 
 demo: docker-build
-	docker run -it --rm --init -p 4321:4321 -p 3000:3000 market-observer
+	docker run -it --rm --init --network=host market-observer
+
+
+docker-build:
+	docker build -t market-observer .
+
+docker-dev:
+	docker run -it --init --rm -p 8080:8080 -p 4321:4321 market-observer
+

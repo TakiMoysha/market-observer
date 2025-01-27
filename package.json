@@ -9,19 +9,21 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^9.0.2",
-    "@elysiajs/cors": "^1.2.0",
-    "@elysiajs/opentelemetry": "^1.2.0",
-    "@elysiajs/static": "^1.2.0",
-    "@elysiajs/swagger": "^1.2.0",
     "astro": "^5.1.9",
-    "elysia": "^1.2.10",
+    "@astrojs/node": "^9.0.2",
+    "elysia": "1.2.10",
+    "@elysiajs/cors": "^1.2.0",
+    "@elysiajs/swagger": "^1.2.0",
+    "@elysiajs/static": "^1.2.0",
     "elysia-autoroutes": "^0.5.0",
     "postgres": "^3.4.5"
   },
   "devDependencies": {
+    "@elysiajs/cookie": "^0.8.0",
     "@elysiajs/eden": "^1.2.0",
+    "@elysiajs/opentelemetry": "^1.2.0",
     "@types/bun": "^1.2.0",
+    "@types/node": "^22.10.10",
     "bun-types": "latest"
   }
 }

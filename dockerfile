@@ -5,35 +5,43 @@ WORKDIR /usr/app
 FROM base AS builder
 WORKDIR /tmp/build
 COPY . .
-RUN bun install --frozen-lockfile --production
+RUN bun install \
+  # --frozen-lockfile \
+  --production
 
 # Frontend
 RUN bun run build
 
 # Backend
-RUN bun build --compile \
+RUN bun install \
+  --frozen-lockfile \
+  --production
+
+RUN bun build \
+  --compile \
   --minify-whitespace \
   --minify-syntax \
   --target bun \
-  --outfile backend_bin \
+  --outfile backbin \
   ./backend/app.ts
 
 
 FROM base AS stage
+ENV NODE_ENV=production
 COPY --from=builder /tmp/build/node_modules node_modules
 COPY --from=builder /tmp/build/public public
 COPY --from=builder /tmp/build/dist/ dist
-COPY --from=builder /tmp/build/backend_bin /usr/app/
+COPY --from=builder /tmp/build/backbin /usr/app/
 
-ENV NODE_ENV=production
 # RUN bun test
 
 
 FROM base AS release
+ENV NODE_ENV=production
 COPY --from=builder /tmp/build/node_modules node_modules
 COPY --from=builder /tmp/build/public public
 COPY --from=stage /usr/app/dist/ /usr/app/
-COPY --from=stage /usr/app/backend_bin /usr/app/
+COPY --from=stage /usr/app/backbin /usr/app/
 
 
 RUN addgroup --system --gid 65532 workers \
@@ -43,7 +51,7 @@ RUN addgroup --system --gid 65532 workers \
 
 USER backend
 EXPOSE 4321
-EXPOSE 3000
+EXPOSE 8080 
 STOPSIGNAL SIGINT
 # ENTRYPOINT [ "bun", "run", "server/entry.mjs", "--host", "0.0.0.0"]
-ENTRYPOINT [ "backend_bin" ]
+ENTRYPOINT [ "./backbin" ]

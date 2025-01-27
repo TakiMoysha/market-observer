@@ -1,8 +1,8 @@
-import { Elysia, t } from "elysia";
-
-import { cors } from "@elysiajs/cors";
-import { swagger } from "@elysiajs/swagger";
-import { staticPlugin } from "@elysiajs/static";
+import cors from "@elysiajs/cors";
+import cookie from "@elysiajs/cookie";
+import swagger from "@elysiajs/swagger";
+import staticPlugin from "@elysiajs/static";
+import Elysia, { t } from "elysia";
 
 import { HealthController } from "./HealthService";
 
@@ -29,13 +29,14 @@ const StaticPlugin = staticPlugin({
   assets: "./public",
 });
 
-const app = new Elysia({ prefix: "/api" })
+export const App = new Elysia()
   .use(StaticPlugin)
-  .use(SwaggerPlugin)
+  .use(swagger())
   .use(cors())
   .use(HealthController)
   .get("/", () => ({ root: true, version: "1.0.0" }))
-  .listen(PORT);
+  .listen({ port: PORT });
 
-export type IApp = typeof app;
-export default app;
+console.log(`Server running on http://${HOSTNAME}:${PORT}`);
+
+export type IApp = typeof App;
