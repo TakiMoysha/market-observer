@@ -1,8 +1,6 @@
 // const encodeBase64 = (value: string) => Buffer.from(value).toString("base64");
 // const decodeBase64 = (value: string) => Buffer.from(value, "base64").toString();
 
-import { throwError } from "../utils";
-
 export const encodeBase64 = (value: string) => btoa(value);
 export const decodeBase64 = (value: string) => atob(value);
 

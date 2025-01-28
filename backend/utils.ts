@@ -1,7 +1,9 @@
 import * as Sentry from "@sentry/node";
 
-export const throwError = (msg: string, code: number = 400) => {
-  const err = new Error(msg, { cause: code });
+interface IErrorOptions { }
+
+export const newError = (msg: string, opts: IErrorOptions = {}) => {
+  const err = new Error(msg);
   Sentry.captureException(err);
-  throw err;
+  return err;
 };

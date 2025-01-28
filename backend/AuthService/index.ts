@@ -1,53 +1,73 @@
 import { Elysia, t } from "elysia";
 
-import { signIn, signUp, recovery, profile } from "./handlers";
-import { AuthError } from "./types";
+import { AuthController } from "./controller";
 import { decodeBase64 } from "./utils";
 
-import UsersJson from "./users.json";
+import { SignInDTO, SignUpDTO } from "./models";
 
-const config = {
-  users: UsersJson,
-};
+import { type IAuthServiceConfig } from "./types";
+import { newError } from "../utils";
 
-export const DeriveAuth = new Elysia({ name: "Service:HealthCheck" })
-  .derive({ as: "scoped" }, ({ headers: { auth }, cookie: { session } }) => {
-    if (!auth) return { auth: { user: null } };
-    const [email, payload] = decodeBase64(auth).split(":");
+// TODO: update type
+export const isSessionValid = (user: any, session: string) => !user || !session;
 
-    console.log("auth:derive", email, payload);
-    // find user session and email
-    const UserObject = config.users.find((user) => user.email === email);
-    const CurrentSession = UserObject?.activeSessions.find(
-      (s) => s === session,
-    );
-    if (!UserObject || !CurrentSession) return { auth: { user: null } };
-
-    const authSession = { user: UserObject, session };
-    return { auth: authSession };
-  })
-  .macro(({ onBeforeHandle }) => ({
-    isAuth(value: boolean) {
-      onBeforeHandle(({ auth, error }) => {
-        if (!auth?.user || !auth.session) return error(401);
-      });
-    },
-  }));
-
-export const AuthService = (config: IAuthConfig) =>
+export const DeriveAuth = (config: IAuthServiceConfig) =>
   new Elysia({
-    name: "auth-controller",
+    name: "services:auth",
     seed: config,
-    prefix: "auth",
     tags: ["auth"],
   })
-    // .use(DeriveAuth)
-    .error({ AUTH_ERROR: AuthError })
-    // .group((app: Elysia) =>
-    //   app
-    //     .guard({ as: "local", resposne: t.String() })
-    // )
-    .get("/profile", profile)
-    .post("/sign-in", signIn)
-    .post("/sign-up", signUp)
-    .post("/recovery", recovery);
+    .model({})
+    .derive(({ server, request }) => ({ ip: server?.requestIP(request) }))
+    .derive(
+      { as: "global" },
+      ({ headers: { auth }, cookie: { session }, ip }) => {
+        if (!auth) return { auth: { user: null } };
+        const [email, payload] = decodeBase64(auth).split(":");
+
+        console.log("auth:derive", email, payload, ip);
+        // TODO: find user session and email
+        const UserObject = config.users.find((user) => user.email === email);
+        const CurrentSession = UserObject?.activeSessions.find(
+          (s: string) => s === session.value,
+        );
+        if (!isSessionValid(UserObject, CurrentSession))
+          return { auth: { user: null } };
+
+        return { auth: { user: UserObject, session: session.value } };
+      },
+    )
+    .onError(({ error, code }) => {
+      if (code === "VALIDATION") {
+        // TODO: update headers
+        return new Response(error.message, {
+          status: 401,
+          headers: { "WWW-Authenticate": `Basic$()` },
+        });
+      }
+    })
+    .macro(({ onBeforeHandle }) => ({
+      isAuth(value: boolean) {
+        onBeforeHandle(({ auth, error }) => {
+          if (!auth.user || !auth.session) {
+            return error("Unauthorized", { status: 401 });
+          }
+        });
+      },
+    }))
+    .post(
+      "/sign-in",
+      () => {
+        newError("Not implemented");
+      },
+      { body: SignInDTO },
+    )
+    .post(
+      "/sign-up",
+      () => {
+        newError("Not implemented");
+      },
+      { body: SignUpDTO },
+    )
+    .post("/recovery", AuthController.recovery)
+    .get("/profile", AuthController.profile, { isAuth: true });

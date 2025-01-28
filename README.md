@@ -4,16 +4,18 @@
 erDiagram
     users {
         int id PK
-        string username
+        string username UNIQUE
+        string email UNIQUE
         string password
-        float balance
-        timestamp created_at
+        float balance DEFAULT 0
+        timestamp created_at DEFAULT CURRENT_TIMESTAMP
     }
 
     products {
         int id PK
         string name
         float price
+        <!-- string source -->
         timestamp created_at
     }
 

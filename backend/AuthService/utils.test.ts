@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { passwordHash } from "./utils";
 
-import UsersJson from "./users.json";
+import UsersJson from "../users.json";
 
 describe("hashPassword", () => {
   it("should hash the password", async () => {
