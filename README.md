@@ -4,18 +4,17 @@
 erDiagram
     users {
         int id PK
-        string username UNIQUE
-        string email UNIQUE
+        string username
+        string email
         string password
-        float balance DEFAULT 0
-        timestamp created_at DEFAULT CURRENT_TIMESTAMP
+        float balance
+        timestamp created_at
     }
 
     products {
         int id PK
         string name
         float price
-        <!-- string source -->
         timestamp created_at
     }
 
@@ -38,4 +37,5 @@ erDiagram
 3. https://github.com/jellydn/elysia-demo-app
 4. https://jsonplaceholder.typicode.com/
 5. https://lucia-auth.com/
-6.
+6. https://elysiajs.com/tutorial#authentication
+7. https://synvinkel.org/notes/node-postgres-migrations
