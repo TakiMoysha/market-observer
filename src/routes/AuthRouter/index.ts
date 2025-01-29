@@ -1,11 +1,15 @@
 import Elysia from "elysia";
 
-export default new Elysia({ tags: ["auth"] });
+export default new Elysia({ tags: ["auth"] })
+  .models()
+  .get("/profile", () => "profile")
+  .group("/auth", (app) =>
+    app
+      .get("/sign-in", () => "sign-in")
+      .get("/sign-up", () => "sign-up")
+      .get("/recovery", () => "recovery"),
+  );
 
-
-
-// import { Elysia, t } from "elysia";
-//
 // import { AuthController } from "./controller";
 // import { decodeBase64 } from "./libs";
 //
