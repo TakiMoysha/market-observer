@@ -7,10 +7,10 @@ const User = t.Object({
   createdAt: t.Date(),
   updatedAt: t.Date(),
 });
-type IUser = typeof User.static;
+type User = typeof User.static;
 
 const Product = t.Object({});
-type IProduct = typeof Product.static;
+type Product = typeof Product.static;
 
 const Purchase = t.Object({});
-type IPurchase = typeof Purchase.static;
+type Purchase = typeof Purchase.static;

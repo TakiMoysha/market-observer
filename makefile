@@ -3,10 +3,8 @@ demo: docker-build
 
 
 dev-back:
-	bun run --hot backend/app.ts
-
-dev-front:
-	bun run astro dev
+	bun install
+	bun --watch src/app.ts
 
 build-backend:
 	bun build --compile \
@@ -14,7 +12,12 @@ build-backend:
   	--minify-syntax \
   	--target bun \
   	--outfile backbin \
-  	./backend/app.ts
+  	./src/app.ts
+
+install-prod:
+	bun install \
+  	--frozen-lockfile \
+  	--production
 
 docker-build:
 	docker build -t market-observer .

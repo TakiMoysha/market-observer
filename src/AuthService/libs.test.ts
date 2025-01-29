@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { passwordHash } from "./utils";
+import { passwordHash } from "./libs";
 
 import UsersJson from "../users.json";
 

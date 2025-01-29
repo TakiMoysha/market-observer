@@ -39,3 +39,5 @@ erDiagram
 5. https://lucia-auth.com/
 6. https://elysiajs.com/tutorial#authentication
 7. https://synvinkel.org/notes/node-postgres-migrations
+8. https://github.com/nuxt-community/composition-api
+9. https://gitlab.com/88brmig/migrants-app-v2

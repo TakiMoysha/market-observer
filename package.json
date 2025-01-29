@@ -1,21 +1,23 @@
 {
-  "name": "astro-latest",
+  "name": "market-observer",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
     "back": "bun run backend/app.ts",
     "back:watch": "bun run --hot backend/app.ts",
+
+    "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/node": "^9.0.2",
+    "@bogeychan/elysia-logger": "^0.1.8",
     "@elysiajs/cors": "^1.2.0",
     "@elysiajs/static": "^1.2.0",
     "@elysiajs/swagger": "^1.2.0",
-    "astro": "^5.1.9",
+    "astro": "^5.1.10",
     "elysia": "1.2.10",
     "elysia-autoroutes": "^0.5.0",
     "elysiajs-sentry": "^1.1.1",
@@ -27,6 +29,7 @@
     "@elysiajs/opentelemetry": "^1.2.0",
     "@types/bun": "^1.2.0",
     "@types/node": "^22.10.10",
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "pino-pretty": "^13.0.0"
   }
 }
