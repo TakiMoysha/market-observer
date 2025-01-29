@@ -5,7 +5,6 @@
   "scripts": {
     "back": "bun run backend/app.ts",
     "back:watch": "bun run --hot backend/app.ts",
-
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
@@ -20,8 +19,11 @@
     "astro": "^5.1.10",
     "elysia": "1.2.10",
     "elysia-autoroutes": "^0.5.0",
+    "elysia-rate-limit": "^4.1.0",
     "elysiajs-sentry": "^1.1.1",
-    "postgres": "^3.4.5"
+    "pino-roll": "^2.2.0",
+    "postgres": "^3.4.5",
+    "redis": "^4.7.0"
   },
   "devDependencies": {
     "@elysiajs/cookie": "^0.8.0",

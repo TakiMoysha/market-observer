@@ -1,5 +1,5 @@
 import { Elysia, t, type Context } from "elysia";
-import type { SignInDTO, SignUpDTO, RecoveryDTO } from "./models";
+import type { SignInDTO, SignUpDTO, RecoveryDTO } from "../models/auth";
 
 interface IRepository {
   create(): Promise<{}>;

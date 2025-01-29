@@ -1,9 +1,9 @@
 import os from "node:os";
 
 import { memoryUsage } from "node:process";
-import { Elysia } from "elysia";
 import config from "../setup/config";
-import { LoggingPluging } from "../setup/plugins";
+
+import Elysia from "elysia";
 
 export default new Elysia({ tags: ["status"] })
   .get("/", () => ({ version: "v1" }))
@@ -14,6 +14,6 @@ export default new Elysia({ tags: ["status"] })
     memoryUsage: memoryUsage,
     config: config,
   }))
-  .post("/report", (ctx) => {
+  .post("/report", () => {
     return { status: "ok" };
   });

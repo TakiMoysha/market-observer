@@ -24,3 +24,7 @@ pnpm-debug.log*
 .idea/
 
 backbin
+
+tmp/*
+
+!.gitkeep

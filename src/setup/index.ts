@@ -1,20 +1,20 @@
 import Elysia from "elysia";
+import { SentryPlugin } from "./sentry";
 import {
+  RedisPlugin,
   StaticPlugin,
-  // SwaggerPlugin,
-  LoggingPluging,
   CORSPlugin,
-  SentryPlugin,
   PostgresPlugin,
 } from "./plugins";
 
-export const setup = new Elysia()
-  .use(PostgresPlugin)
-  .use(SentryPlugin)
-  // .use(SwaggerPlugin) // https://github.com/elysiajs/elysia-swagger/issues/174
-  .use(StaticPlugin)
-  .use(LoggingPluging)
-  .use(CORSPlugin)
-  .onStart(({ server }) =>
-    console.log(`[${server?.development ? "DEV" : "PROD"}] ${server?.url}`),
-  );
+export const setup = (app: Elysia) =>
+  app
+    .use(PostgresPlugin)
+    .use(RedisPlugin)
+    .use(SentryPlugin)
+    // .use(SwaggerPlugin) // https://github.com/elysiajs/elysia-swagger/issues/174
+    .use(CORSPlugin)
+    .use(StaticPlugin)
+    .onStart(({ server }) =>
+      console.log(`[${server?.development ? "DEV" : "PROD"}] ${server?.url}`),
+    );
