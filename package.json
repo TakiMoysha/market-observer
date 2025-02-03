@@ -3,24 +3,23 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "back": "bun run backend/app.ts",
-    "back:watch": "bun run --hot backend/app.ts",
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "server": "bun run server/app.ts",
+    "server:watch": "bun run --hot server/app.ts"
   },
   "dependencies": {
-    "@astrojs/node": "^9.0.2",
-    "@bogeychan/elysia-logger": "^0.1.8",
     "@elysiajs/cors": "^1.2.0",
     "@elysiajs/static": "^1.2.0",
     "@elysiajs/swagger": "^1.2.0",
-    "astro": "^5.1.10",
+    "@oslojs/binary": "^1.0.0",
+    "@oslojs/crypto": "^1.0.1",
+    "@oslojs/encoding": "1.1.0",
+    "@oslojs/otp": "^1.1.0",
+    "@oslojs/webauthn": "^1.0.0",
     "elysia": "1.2.10",
     "elysia-autoroutes": "^0.5.0",
     "elysia-rate-limit": "^4.1.0",
     "elysiajs-sentry": "^1.1.1",
+    "@bogeychan/elysia-logger": "^0.1.8",
     "pino-roll": "^2.2.0",
     "postgres": "^3.4.5",
     "redis": "^4.7.0"
